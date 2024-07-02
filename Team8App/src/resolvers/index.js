@@ -31,7 +31,30 @@ const getAllEventAttendees = async () => {
   return allAttendees;
 };
 
-const confluenceUsers = [{ firstName: 'Mary', lastName: 'Bickel' }]; // array of Confluence users to match
+const confluenceUsers =  // array of Confluence users to match 
+[{
+      "firstName": "Melissa",
+      "lastName": "Paisley"
+    },{
+      "firstName": "Mary",
+      "lastName": "Bickel"
+    }, {
+      "firstName": "Kshama",
+      "lastName": "Patel"
+    }, {
+      "firstName": "Laura",
+      "lastName": "White"
+    },
+    {
+      "firstName": "Tenzin",
+      "lastName": "Shakya"
+    }, 
+    {
+      "firstName": "Yixuan",
+      "lastName": "Wang"
+    }
+
+]
 
 const resolver = new Resolver();
 
