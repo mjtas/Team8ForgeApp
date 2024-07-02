@@ -2,15 +2,24 @@ import Resolver from '@forge/resolver';
 import { fetch } from '@forge/api';
 
 const getHumanitixData = async (eventId) => {
-  const response = await fetch(`https://api.humanitix.com/v1/events/${eventId}/orders`, {
+  const response = await fetch(`https://api.humanitix.com/v1/events/${eventId}/tickets?page=1`, {
     headers: {
       'x-api-key': 'ae4559154a568e0a6f34e519d2df2b0672a0589352d5f7e1087a41c606b3a098571df7f17ae3f703a1ed95ea95cef4f52c4981d4467c479899013f3af5a378d3f002abd663c4e1a1e6a2008694b10d95e0bd47a55a093c54259a0422df63046def344f9356b0a2916f9a18b93ba7e7'
     }
   });
 
-  const data = await response.json();
-  return data;
+  if (!response.ok) {
+    throw new Error(`Failed to fetch data for event ${eventId}`);
+  }
+
+  return await response.json();
 };
+
+const resolver = new Resolver();
+
+resolver.define('getHumanitix', async (req) => {
+  return getHumanitixData();
+})
 
 const eventIds = ['66835945adee163d1a4112e5', '668342566df0c0087307ed9b']; // event IDs to fetch
 
@@ -28,8 +37,13 @@ const getAllEventAttendees = async () => {
     }
   }
 
+  console.log('Attendee Data:', allAttendees); // print attendee data to terminal
   return allAttendees;
 };
+
+resolver.define('getAttendees', async (req) => {
+  return getAllEventAttendees();
+})
 
 const confluenceUsers =  // array of Confluence users to match 
 [{
@@ -53,10 +67,7 @@ const confluenceUsers =  // array of Confluence users to match
       "firstName": "Yixuan",
       "lastName": "Wang"
     }
-
 ]
-
-const resolver = new Resolver();
 
 resolver.define('getLeaderboard', async (req) => {
   const allAttendees = await getAllEventAttendees(); // fetch all attendees from Humanitix orders
@@ -78,7 +89,8 @@ resolver.define('getLeaderboard', async (req) => {
   const leaderboardData = generateLeaderboard(allAttendees, confluenceUsers);
   console.log('Leaderboard Data:', leaderboardData); // print leaderboard data to terminal
 
-  return leaderboardData
+  return leaderboardData;
 });
+
 
 export const handler = resolver.getDefinitions();
