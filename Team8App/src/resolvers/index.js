@@ -49,8 +49,8 @@ resolver.define('getConfluence', async (req) => {
   return getConfluenceUserData()
 });
 
-resolver.define('getHumanitix', async (req) => {
-  return getHumanitixData()
+resolver.define('getAllTickets', async (req) => {
+  return getAllEventTickets()
 });
 
 
@@ -70,6 +70,3 @@ resolver.define('getLeaderboard', (req) => {
 
 
 export const handler = resolver.getDefinitions();
-
-
-
