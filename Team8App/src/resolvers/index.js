@@ -14,7 +14,11 @@ const getHumanitixData = async () => {
   return data;
 };
 
-
+const getConfluenceUserData = async () => {
+  const response = await requestConfluence('/wiki/rest/api/search/user?cql={cql}');
+  const data = await response.json();
+  return data.results;
+};
 
 const resolver = new Resolver();
 
