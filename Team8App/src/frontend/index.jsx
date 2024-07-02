@@ -1,18 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import ForgeReconciler, { Text } from '@forge/react';
+import ForgeReconciler, { Text, Table, Head, Row, Cell } from '@forge/react';
 import { invoke } from '@forge/bridge';
 
 const App = () => {
-  const [data, setData] = useState(null);
+  const [leaderboardData, setLeaderboardData] = useState(null);
 
   useEffect(() => {
-    invoke('getText', { example: 'my-invoke-variable' }).then(setData);
+    // Fetch the leaderboard data using the 'invoke' function
+    invoke('getLeaderboard').then(setLeaderboardData);
   }, []);
 
   return (
     <>
-      <Text>Hello world!</Text>
-      <Text>{data ? data : 'Loading...'}</Text>
+      <Text>Leaderboard</Text>
+      {leaderboardData ? (
+        <Table>
+          <Head>
+            <Cell>User</Cell>
+            <Cell>Tickets Bought</Cell>
+          </Head>
+          {leaderboardData.map(({ email, count }) => (
+            <Row key={email}>
+              <Cell>{email}</Cell>
+              <Cell>{count}</Cell>
+            </Row>
+          ))}
+        </Table>
+      ) : (
+        <Text>Loading...</Text>
+      )}
     </>
   );
 };

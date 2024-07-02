@@ -1,10 +1,4 @@
-# Forge Hello World
-
-This project contains a Forge app written in Javascript that displays `Hello World!` in a Confluence macro. 
-
-See [developer.atlassian.com/platform/forge/](https://developer.atlassian.com/platform/forge) for documentation and tutorials explaining Forge.
-
-## Requirements
+# Forge App
 
 See [Set up Forge](https://developer.atlassian.com/platform/forge/set-up-forge/) for instructions to get set up.
 
