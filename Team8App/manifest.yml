@@ -6,7 +6,7 @@ modules:
       resolver:
         function: resolver
       title: Leaderboard
-      description: Display a leaderboard of Atlassian ticket buyers
+      description: Display a leaderboard of Atlassian event attendees
   function:
     - key: resolver
       handler: index.handler
@@ -23,8 +23,4 @@ permissions:
     - write:confluence-content
     - read:confluence-content.all
     - storage:app
-  external:
-    fetch:
-      backend:
-      - https://api.humanitix.com/v1/events/*/ticketsimport
   
