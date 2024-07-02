@@ -75,7 +75,10 @@ resolver.define('getLeaderboard', async (req) => {
     return leaderboard.sort((a, b) => b.count - a.count);
   };
 
-  return generateLeaderboard(allAttendees, confluenceUsers);
+  const leaderboardData = generateLeaderboard(allAttendees, confluenceUsers);
+  console.log('Leaderboard Data:', leaderboardData); // print leaderboard data to terminal
+
+  return leaderboardData
 });
 
 export const handler = resolver.getDefinitions();

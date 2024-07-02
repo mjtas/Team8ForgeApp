@@ -6,7 +6,7 @@ modules:
       resolver:
         function: resolver
       title: Leaderboard
-      description: Display a leaderboard of Atlassian ticket buyers
+      description: Display a leaderboard of Atlassian event attendees
   function:
     - key: resolver
       handler: index.handler
