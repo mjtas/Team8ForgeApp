@@ -14,6 +14,23 @@ const getHumanitixData = async () => {
   return data;
 };
 
+const eventIds = ['66835945adee163d1a4112e5', '668342566df0c0087307ed9b']; // event IDs to fetch
+
+const getAllEventTickets = async () => {
+  const allTickets = [];
+
+  for (const eventId of eventIds) {
+    try {
+      const eventData = await getHumanitixData(eventId);
+      allTickets.push({ eventId, tickets: eventData });
+    } catch (error) {
+      console.error(`Error fetching tickets for event ${eventId}:`, error);
+    }
+  }
+
+  return allTickets;
+};
+
 const getConfluenceUserData = async () => {
   const response = await requestConfluence('/wiki/rest/api/search/user?cql={cql}');
   const data = await response.json();
