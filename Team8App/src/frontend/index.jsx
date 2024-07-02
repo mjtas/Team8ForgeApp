@@ -5,38 +5,48 @@ import { invoke, requestConfluence } from '@forge/bridge';
 const App = () => {
   const [leaderboardData, setLeaderboardData] = useState(null);
   const [data, setData] = useState(null);
+  const [chart, setChart] = useState(null); //chart is array 
 
 
-  const getConfluenceUserData = async () => {
-    const response = await requestConfluence('/wiki/rest/api/search/user?cql=type=user&maxResults=1000');
-    const data = await response.json();
-    return data.results;
-  };
+  // const getConfluenceUserData = async () => { //not needed 
+  //   response = await requestConfluence('/wiki/rest/api/search/user?cql={user.fullname~Ksh}');
+  //   data = await response.json();
+  //   console.log(data);
+  //   return data.results;
+  // };
 
-  useEffect(() => {
-    setData = getConfluenceUserData();
-  })
+  // useEffect(() => {
+  //   getConfluenceUserData()  ;
+  // }, [])
 
   useEffect(() => {
     // Fetch the leaderboard data using the 'invoke' function
     // invoke('getLeaderboard').then(setLeaderboardData);
-    invoke('getConfluence').then(setData);
-  }, []);
+    invoke('getHumanitix').then(setData); //
+  }, []); 
+
+  useEffect(() => {
+    // Fetch the leaderboard data using the 'invoke' function
+    // invoke('getLeaderboard').then(setLeaderboardData);
+    console.log("data has changed") //for debugging 
+    //TODO: process data and store it in chart variable 
+    //use setChart() method to update chart array  
+  }, [data]); 
 
   return (
     <>
       {console.log(data)}
       <Text>Leaderboard</Text>
-      {leaderboardData ? (
+      {data ? (
         <Table>
           <Head>
             <Cell>User</Cell>
             <Cell>Tickets Bought</Cell>
           </Head>
-          {leaderboardData.map(({ email, count }) => (
-            <Row key={email}>
-              <Cell>{email}</Cell>
-              <Cell>{count}</Cell>
+          {data.tickets.map(({ ticket}) => ( //use chart.map instead of data.tickets and user instead of ticket (add more fields below where neccessary)
+            <Row key={ticket.firstName}>
+              <Cell>{ticket.firstName}</Cell>
+              <Cell>{1}</Cell> 
             </Row>
           ))}
         </Table>
