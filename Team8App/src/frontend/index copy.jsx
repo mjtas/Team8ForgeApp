@@ -1,102 +1,48 @@
 import React, { useEffect, useState } from 'react';
-import ForgeReconciler, { Text, DynamicTable, Link, LineChart } from '@forge/react';
-import { invoke } from '@forge/bridge';
-
-
-export const presidents = [
-  {
-    id: 1,
-    name: "George Washington",
-    score: 613,
-  },
-  {
-    id: 2,
-    name: "John Adams",
-    score: 563,
-  },
-  {
-    id: 3,
-    name: "Thomas Jefferson",
-    score: 358,
-  },
-  {
-    id: 4,
-    name: "James Madison",
-    score: 203,
-  },
-  {
-    id: 5,
-    name: "James Monroe",
-    score: 150,
-  },
-];
-
-
-const createKey = (input) => {
-  return input?input.replace(/^(the|a|an)/, "").replace(/\s/g, "") : input;
-}
-
-// applied as rows in the form
-const rows = presidents.map((president, index) => ({
-  key: `row-${index}-${president.name}`,
-  cells: [
-    {
-      key: president.id,
-      content: <Link href="">{president.id}</Link>,
-    },
-    {
-      key: createKey(president.name),
-      content: <Link href="">{president.name}</Link>,
-    },
-    {
-      key: president.score,
-      content: president.score,
-    },
-  ],
-}));
-
-const head = {
-  cells: [
-    {
-      key: "id",
-      content: "id",
-      isSortable: true,
-    },
-    {
-      key: "Name",
-      content: "Name",
-      shouldTruncate: true,
-      isSortable: true,
-    },
-    {
-      key: "Score",
-      content: "Score",
-      shouldTruncate: true,
-      isSortable: true,
-    },
-  ],
-};
+import ForgeReconciler, { Text, Table, Head, Row, Cell } from '@forge/react';
+import { invoke, requestConfluence } from '@forge/bridge';
 
 const App = () => {
+  const [leaderboardData, setLeaderboardData] = useState(null);
   const [data, setData] = useState(null);
 
+
+  const getConfluenceUserData = async () => {
+    const response = await requestConfluence('/wiki/rest/api/search/user?cql=type=user&maxResults=1000');
+    const data = await response.json();
+    return data.results;
+  };
+
   useEffect(() => {
-    invoke('getText', { example: 'my-invoke-variable' }).then(setData);
+    setData = getConfluenceUserData();
+  })
+
+  useEffect(() => {
+    // Fetch the leaderboard data using the 'invoke' function
+    // invoke('getLeaderboard').then(setLeaderboardData);
+    invoke('getConfluence').then(setData);
   }, []);
 
   return (
     <>
-      <LineChart 
-        data={presidents} 
-        xAccessor={'id'} 
-        yAccessor={'score'} 
-        colorAccessor={'name'}
-      />;
-      <DynamicTable
-        caption="List of US Presidents"
-        head={head}
-        rows={rows}
-      />
+      {console.log(data)}
+      <Text>Leaderboard</Text>
+      {leaderboardData ? (
+        <Table>
+          <Head>
+            <Cell>User</Cell>
+            <Cell>Tickets Bought</Cell>
+          </Head>
+          {leaderboardData.map(({ email, count }) => (
+            <Row key={email}>
+              <Cell>{email}</Cell>
+              <Cell>{count}</Cell>
+            </Row>
+          ))}
+        </Table>
+      ) : (
+        <Text>Loading...</Text>
+      )}
     </>
   );
 };
