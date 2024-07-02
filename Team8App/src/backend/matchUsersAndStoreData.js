@@ -15,3 +15,4 @@ export async function matchUsersAndStoreData(humanitixData) {
 
   await storage.set('userTicketsCount', userTicketsCount);  //user.accountId 
 }
+
