@@ -1,0 +1,18 @@
+modules:
+  macro:
+    - key: team8app-hello-world-macro
+      resource: main
+      render: native
+      resolver:
+        function: resolver
+      title: Team8App
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: src/frontend/index.jsx
+app:
+  runtime:
+    name: nodejs18.x
+  id: ari:cloud:ecosystem::app/73959bd3-3c40-4cce-8d1b-b46de2f7ad38
