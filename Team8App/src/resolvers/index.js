@@ -36,6 +36,30 @@ resolver.define('getHumanitix', async (req) => {
   return getHumanitixData()
 });
 
+const confluenceUsers =  //copy this array to main 
+[{
+      "firstName": "Melissa",
+      "lastName": "Paisley"
+    },{
+      "firstName": "Mary",
+      "lastName": "Bickel"
+    }, {
+      "firstName": "Kshama",
+      "lastName": "Patel"
+    }, {
+      "firstName": "Laura",
+      "lastName": "White"
+    },
+    {
+      "firstName": "Tenzin",
+      "lastName": "Shakya"
+    }, 
+    {
+      "firstName": "Yixuan",
+      "lastName": "Wang"
+    }
+
+]
 
 resolver.define('getLeaderboard', (req) => {
   const generateLeaderboard = (humanitixData, confluenceUserData) => {
