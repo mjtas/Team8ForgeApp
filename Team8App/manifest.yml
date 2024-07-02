@@ -22,5 +22,6 @@ permissions:
     - read:confluence-content.summary
     - write:confluence-content
     - read:confluence-content.all
+    - read:content-details:confluence
     - storage:app
   
