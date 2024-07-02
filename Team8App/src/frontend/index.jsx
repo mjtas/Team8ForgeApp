@@ -1,17 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import ForgeReconciler, { Text, Table, Head, Row, Cell } from '@forge/react';
-import { invoke } from '@forge/bridge';
+import { invoke, requestConfluence } from '@forge/bridge';
 
 const App = () => {
   const [leaderboardData, setLeaderboardData] = useState(null);
+  const [data, setData] = useState(null);
+
+
+  const getConfluenceUserData = async () => {
+    const response = await requestConfluence('/wiki/rest/api/search/user?cql=type=user&maxResults=1000');
+    const data = await response.json();
+    return data.results;
+  };
+
+  useEffect(() => {
+    setData = getConfluenceUserData();
+  })
 
   useEffect(() => {
     // Fetch the leaderboard data using the 'invoke' function
-    invoke('getLeaderboard').then(setLeaderboardData);
+    // invoke('getLeaderboard').then(setLeaderboardData);
+    invoke('getConfluence').then(setData);
   }, []);
 
   return (
     <>
+      {console.log(data)}
       <Text>Leaderboard</Text>
       {leaderboardData ? (
         <Table>

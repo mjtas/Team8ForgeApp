@@ -3,15 +3,13 @@ modules:
     - key: ticket-leaderboard-macro
       resource: main
       render: native
-      title: Leaderboard
+      resolver:
+        function: resolver
+      title: Leaderboard (Kshama)
       description: Display a leaderboard of Atlassian ticket buyers
   function:
-    - key: generateLeaderboard 
-      handler: generateLeaderboard.generateLeaderboard
-    - key: fetchConfluenceData
-      handler: fetchConfluenceData.fetchConfluenceData
-    - key: fetchHumanitixData
-      handler: fetchHumanitixData.fetchHumanitixData
+    - key: resolver
+      handler: index.handler
 resources:
   - key: main
     path: src/frontend/index.jsx
