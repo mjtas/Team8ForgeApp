@@ -6,7 +6,7 @@ modules:
       resolver:
         function: resolver
       title: Leaderboard
-      description: Display a leaderboard of Atlassian event attendees
+      description: Display a centralised environment of volunteering opportunities
   function:
     - key: resolver
       handler: index.handler
@@ -25,8 +25,9 @@ permissions:
     - read:content-details:confluence
     - storage:app
   external:
-    images:
-      - i.imgur.com
-    fetch:
-      backend:
-      - https://api.humanitix.com/v1/events/*/ticketsimport
+      images:
+        - i.imgur.com
+        - cdn.filestackcontent.com
+      fetch:
+        backend:
+        - https://api.humanitix.com/v1/events/*
