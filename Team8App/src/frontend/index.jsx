@@ -74,6 +74,7 @@ const App = () => {
             <Box xcss={priceStyle}>
               <Stack alignInline="center" space="space.0">
                 <Box><Text>Adoption fee</Text></Box>
+                <Button>Sign Up</Button>
                 <Box><Text>${pet.adoptionFee}</Text></Box>
               </Stack>
             </Box>
