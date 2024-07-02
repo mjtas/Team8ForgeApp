@@ -18,7 +18,7 @@ resources:
 app:
   runtime:
     name: nodejs18.x
-  id: ari:cloud:ecosystem::app/b75de96d-cfa3-4e49-a1bb-14e8ac3df713
+  id: ari:cloud:ecosystem::app/73959bd3-3c40-4cce-8d1b-b46de2f7ad38
 permissions:
   scopes:
     - read:confluence-content.summary
@@ -29,3 +29,4 @@ permissions:
     fetch:
       backend:
       - https://api.humanitix.com/v1/events/*/ticketsimport
+  
