@@ -5,7 +5,7 @@ modules:
       render: native
       resolver:
         function: resolver
-      title: Team8App
+      title: Team8App (Kshama)
   function:
     - key: resolver
       handler: index.handler
@@ -15,4 +15,4 @@ resources:
 app:
   runtime:
     name: nodejs18.x
-  id: ari:cloud:ecosystem::app/73959bd3-3c40-4cce-8d1b-b46de2f7ad38
+  id: ari:cloud:ecosystem::app/b75de96d-cfa3-4e49-a1bb-14e8ac3df713
