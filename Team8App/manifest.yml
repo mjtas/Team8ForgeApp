@@ -3,24 +3,15 @@ modules:
     - key: ticket-leaderboard-macro
       resource: main
       render: native
-      resolver:
-        function: getLeaderboardFunction
       title: Leaderboard
       description: Display a leaderboard of Atlassian ticket buyers
   function:
-    - key: getLeaderboardFunction
-      handler: index.handler
-    - key: syncTickets
-      handler: src/backend/syncTickets.syncTickets
-  scheduledTrigger:
-    - function: syncTickets
-      interval: "day"
-      key: sync-ticket-data
-  trigger:
-    - key: getLeaderboardTrigger
-      function: getLeaderboardFunction
-      events:
-        - http
+    - key: generateLeaderboard 
+      handler: generateLeaderboard.generateLeaderboard
+    - key: fetchConfluenceData
+      handler: fetchConfluenceData.fetchConfluenceData
+    - key: fetchHumanitixData
+      handler: fetchHumanitixData.fetchHumanitixData
 resources:
   - key: main
     path: src/frontend/index.jsx
@@ -37,4 +28,4 @@ permissions:
   external:
     fetch:
       backend:
-      - https://api.humanitix.com/v1/events/*/tickets
+      - https://api.humanitix.com/v1/events/*/ticketsimport
