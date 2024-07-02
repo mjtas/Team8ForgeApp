@@ -25,6 +25,8 @@ permissions:
     - storage:app
   external:
     fetch:
+      images:
+        - i.imgur.com
       backend:
       - https://api.humanitix.com/v1/events/*/ticketsimport
   
