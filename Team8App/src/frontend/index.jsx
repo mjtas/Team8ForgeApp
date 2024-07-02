@@ -72,78 +72,44 @@ const cardData = [{
 }
 ]
 
-const Volunteers = [
-  {
-    id: 1,
-    name: "George Washington",
-    score: 613,
-  },
-  {
-    id: 2,
-    name: "John Adams",
-    score: 563,
-  },
-  {
-    id: 3,
-    name: "Thomas Jefferson",
-    score: 358,
-  },
-  {
-    id: 4,
-    name: "James Madison",
-    score: 203,
-  },
-  {
-    id: 5,
-    name: "James Monroe",
-    score: 150,
-  },
-];
-
-const rows = Volunteers.map((Volunteer, index) => ({
-  key: `row-${index}-${Volunteer.name}`,
-  cells: [
-    {
-      key: Volunteer.id,
-      content: <Link href="">{Volunteer.id}</Link>,
-    },
-    {
-      key: createKey(Volunteer.name),
-      content: <Link href="">{Volunteer.name}</Link>,
-    },
-    {
-      key: Volunteer.score,
-      content: Volunteer.score,
-    },
-  ],
-}));
-
-const head = {
-  cells: [
-    {
-      key: "Rank",
-      content: "Rank",
-      isSortable: true,
-    },
-    {
-      key: "Name",
-      content: "Name",
-      shouldTruncate: true,
-      isSortable: true,
-    },
-    {
-      key: "Score",
-      content: "Score",
-      shouldTruncate: true,
-      isSortable: true,
-    },
-  ],
-};
-
-export const LeaderBoard = () => {
+const LeaderBoard = () => {
+  const [leaderboardData, setLeaderboardData] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  
+  useEffect(() => {
+    invoke('getLeaderboard').then(setLeaderboardData);
+  }, []);
+
+  console.log('Leaderboard data: ', leaderboardData);
+  
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
+
+  const rows = leaderboardData.map((entry, index) => ({
+        key: `row-${index}-${entry.username}`,
+        cells: [
+          {
+            key: `rank-${entry.rank}`,
+            content: <Link href="">{entry.rank}</Link>,
+          },
+          {
+            key: createKey(entry.username),
+            content: <Link href="">{entry.username}</Link>,
+          },
+          {
+            key: `score-${entry.username}`,
+            content: entry.count,
+          },
+        ],
+      }));
+
+  const head = {
+    cells: [
+      { key: 'Rank', content: 'Rank', isSortable: true },
+      { key: 'Name', content: 'Name', shouldTruncate: true, isSortable: true },
+      { key: 'Score', content: 'Score', shouldTruncate: true, isSortable: true },
+    ],
+  };
 
   return (
     <>
@@ -158,17 +124,10 @@ export const LeaderBoard = () => {
               <ModalTitle>Leaderboard</ModalTitle>
             </ModalHeader>
             <ModalBody>
-            <LineChart 
-        data={Volunteers} 
-        xAccessor={'id'} 
-        yAccessor={'score'} 
-        colorAccessor={'name'}
-      />;
-      <DynamicTable
-        caption="Rankings of Volunteers"
-        head={head}
-        rows={rows}
-      />              
+                <>
+                  <LineChart data={leaderboardData} xAccessor={'rank'} yAccessor={'count'} colorAccessor={'username'} />
+                  <DynamicTable caption="Rankings of Volunteers" head={head} rows={rows} />
+                </>
             </ModalBody>
             <ModalFooter>
               <Button appearance="subtle" onClick={closeModal}>
@@ -181,7 +140,6 @@ export const LeaderBoard = () => {
     </>
   );
 };
-
 const LoginForm = ({ isOpen,onClose  }) => {
   const { handleSubmit, register, getFieldId } = useForm();
 
@@ -243,8 +201,8 @@ const LoginForm = ({ isOpen,onClose  }) => {
 }
 
 const App = () => {
-  const [isOpen, setIsOpen] = useState(false);
 
+  const [isOpen, setIsOpen] = useState(false);
   const open = () => setIsOpen(true);
   const close = () => setIsOpen(false);
 
