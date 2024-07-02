@@ -36,7 +36,43 @@ const createKey = (input) => {
   return input?input.replace(/^(the|a|an)/, "").replace(/\s/g, "") : input;
 }
 
-const presidents = [
+const cardData = [{
+  name: "Volunteering SA&NT",
+  imgurUrl: "u3vSo35qSBKJDv24Zgua",
+  imgurDescription: "Lunchtime conversation: Volunteering and Human Rights",
+  description: "Lunchtime conversation: Volunteering and Human Rights",
+},{
+  name: "Volunteering New Zealand",
+  imgurUrl: "FL2bk9ZmQDqEIrKaBoPK",
+  imgurDescription: "Volunteering Changemakers Hui",
+  description: "Volunteering Changemakers Hui",
+},{
+  name: "Volunteering SA&NT",
+  imgurUrl: "KqNMH0T2Txmr2a5lfz7I",
+  imgurDescription: "Disability Inclusive Volunteer Management",
+  description: "Disability Inclusive Volunteer Management",
+},
+{
+  name: "Collingwood Children's Farm",
+  imgurUrl: "WG8BOSMaTqiBtdUN6zUE",
+  imgurDescription: "Corporate Volunteering",
+  description: "Domestic Short Hair",
+},
+{
+  name: "Nangak Tamboree Wildlife Sanctuary",
+  imgurUrl: "P912JxTGQI6OQgSmn703",
+  imgurDescription: "Senior's Festival Come and try volunteering",
+  description: "Senior's Festival Come and try volunteering",
+},
+{
+  name: "Collingwood Children's Farm",
+  imgurUrl: "WG8BOSMaTqiBtdUN6zUE",
+  imgurDescription: "Corporate Volunteering",
+  description: "Domestic Short Hair",
+}
+]
+
+const Volunteers = [
   {
     id: 1,
     name: "George Washington",
@@ -64,20 +100,20 @@ const presidents = [
   },
 ];
 
-const rows = presidents.map((president, index) => ({
-  key: `row-${index}-${president.name}`,
+const rows = Volunteers.map((Volunteer, index) => ({
+  key: `row-${index}-${Volunteer.name}`,
   cells: [
     {
-      key: president.id,
-      content: <Link href="">{president.id}</Link>,
+      key: Volunteer.id,
+      content: <Link href="">{Volunteer.id}</Link>,
     },
     {
-      key: createKey(president.name),
-      content: <Link href="">{president.name}</Link>,
+      key: createKey(Volunteer.name),
+      content: <Link href="">{Volunteer.name}</Link>,
     },
     {
-      key: president.score,
-      content: president.score,
+      key: Volunteer.score,
+      content: Volunteer.score,
     },
   ],
 }));
@@ -85,8 +121,8 @@ const rows = presidents.map((president, index) => ({
 const head = {
   cells: [
     {
-      key: "id",
-      content: "id",
+      key: "Rank",
+      content: "Rank",
       isSortable: true,
     },
     {
@@ -112,7 +148,7 @@ export const LeaderBoard = () => {
   return (
     <>
       <Button appearance="primary" onClick={openModal}>
-        Open modal
+        Volunteer Leaderboard
       </Button>
 
       <ModalTransition>
@@ -123,13 +159,13 @@ export const LeaderBoard = () => {
             </ModalHeader>
             <ModalBody>
             <LineChart 
-        data={presidents} 
+        data={Volunteers} 
         xAccessor={'id'} 
         yAccessor={'score'} 
         colorAccessor={'name'}
       />;
       <DynamicTable
-        caption="List of US Presidents"
+        caption="Rankings of Volunteers"
         head={head}
         rows={rows}
       />              
@@ -146,36 +182,77 @@ export const LeaderBoard = () => {
   );
 };
 
-const App = () => {
+const LoginForm = ({ isOpen,onClose  }) => {
+  const { handleSubmit, register, getFieldId } = useForm();
 
-  const cardData = [{
-    name: "Volunteering SA&NT",
-    imgurUrl: "pzpMdhI.png",
-    imgurDescription: "Lunchtime conversation: Volunteering and Human Rights",
-    description: "Domestic Short Hair",
-  },{
-    name: "Walter",
-    imgurUrl: "1bCyWtV.png",
-    imgurDescription: "Walter, a ginger cat wears a burgundy bow tie",
-    description: "Domestic Short Hair",
-  },{
-    name: "Pickle",
-    imgurUrl: "5of4ryw.png",
-    imgurDescription: "Pickle is a smol tiny floof, wrapped in a pink blanket",
-    description: "Domestic Short Hair",
-  },
-  {
-    name: "Pickle",
-    imgurUrl: "5of4ryw.png",
-    imgurDescription: "Pickle is a smol tiny floof, wrapped in a pink blanket",
-    description: "Domestic Short Hair",
-  }
-]
+  const submit = (data) => {
+    console.log(data);
+  };
+
+  return (
+    <>
+      <ModalTransition>
+        {isOpen && (
+          <Modal onClose={close}>
+            <Form onSubmit={handleSubmit(submit)}>
+              <ModalHeader>
+                <ModalTitle>Sign up</ModalTitle>
+              </ModalHeader>
+              <ModalBody>
+                <Stack space="space.100">
+                  <Box>
+                    <Label labelFor={getFieldId("name")}>Name</Label>
+                    <Textfield {...register("name")} />
+                  </Box>
+                  <Box>
+                    <Label labelFor={getFieldId("email")}>Email</Label>
+                    <Textfield {...register("email")} />
+                  </Box>
+                </Stack>
+                <Box>
+                  <Label labelFor={getFieldId("firstName")}>First Name</Label>
+                  <Textfield {...register("firstName")} />
+                </Box>
+                <Box>
+                  <Label labelFor={getFieldId("lastName")}>Last Name</Label>
+                  <Textfield {...register("lastName")} />
+                </Box>
+                <Box>
+                  <Label labelFor={getFieldId("country")}>Country</Label>
+                  <Textfield {...register("country")} />
+                </Box>
+                <Box>
+                  <Label labelFor={getFieldId("state")}>State</Label>
+                  <Textfield {...register("state")} />
+                </Box>
+              </ModalBody>
+              <ModalFooter>
+                <Button onClick={onClose} appearance="subtle">
+                  Cancel
+                </Button>
+                <Button appearance="primary" type="submit">
+                  Submit
+                </Button>
+              </ModalFooter>
+            </Form>
+          </Modal>
+        )}
+      </ModalTransition>
+    </>
+  );
+}
+
+const App = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const open = () => setIsOpen(true);
+  const close = () => setIsOpen(false);
 
   const cardStyle = xcss({
     backgroundColor: 'elevation.surface',
     margin: 'space.200',
     width: '25%',
+    height: '50%',
     padding: 'space.200',
     boxShadow: 'elevation.shadow.overflow',
     borderColor: 'color.border',
@@ -187,7 +264,7 @@ const App = () => {
       width: '30%'
     },  });
 
-  const priceStyle = xcss({
+  const SignUpStyle = xcss({
     backgroundColor: 'color.background.accent.purple.subtler',
     width: '90%',
     marginBottom: 'space.200',
@@ -200,16 +277,16 @@ const App = () => {
         <Box xcss={cardStyle}>
           <Stack alignInline="center" space="space.200" >
             <Heading as="h2">{Volunteering.name}</Heading>
-            <Image src={"https://i.imgur.com/"+ Volunteering.imgurUrl} size="large" alt={Volunteering.imgurDescription}></Image>
+            <Image src={"https://cdn.filestackcontent.com/compress/output=format:webp/cache=expiry:max/resize=width:1250/"+ Volunteering.imgurUrl} size="large" alt={Volunteering.imgurDescription}></Image>
             <Box>
               <Stack alignInline="center" space="space.0" >
                 <Box><Text>{Volunteering.description}</Text></Box>
               </Stack>
             </Box>
-            <Box xcss={priceStyle}>
+            <Box xcss={SignUpStyle}>
               <Stack alignInline="center" space="space.0">
                 <Box><Text> </Text></Box>
-                <Button>Sign Up</Button>
+                <Button onClick={open}>Sign Up</Button>
                 <Box><Text> </Text></Box>
               </Stack>
             </Box>
@@ -220,11 +297,17 @@ const App = () => {
   }
 
   function CardGroup(VolunteeringGroup) {
+    const midpoint = Math.ceil(VolunteeringGroup.length / 2);
+    const VolunteeringGroup1 = VolunteeringGroup.slice(0, midpoint);
+    const VolunteeringGroup2 = VolunteeringGroup.slice(midpoint);
     return (
       <>
         <Box>
           <Inline alignInline="center">
-            {VolunteeringGroup.map(Volunteering => (Card(Volunteering)))}
+            {VolunteeringGroup1.map(Volunteering => (Card(Volunteering)))}
+          </Inline>
+          <Inline alignInline="center">
+            {VolunteeringGroup2.map(Volunteering => (Card(Volunteering)))}
           </Inline>
         </Box>
       </>
@@ -242,6 +325,7 @@ const App = () => {
         {CardGroup(cardData)}
       </Box>
       </Tabs>
+      <LoginForm isOpen={isOpen} onClose={close} />
     </>
   );
 };

@@ -6,7 +6,7 @@ modules:
       resolver:
         function: resolver
       title: Leaderboard
-      description: Display a leaderboard of Atlassian event attendees
+      description: Display a centralised environment of volunteering opportunities
   function:
     - key: resolver
       handler: index.handler
@@ -16,7 +16,7 @@ resources:
 app:
   runtime:
     name: nodejs18.x
-  id: ari:cloud:ecosystem::app/25bd299e-48ab-4325-8d17-86ebea0e461d
+  id: ari:cloud:ecosystem::app/507ba8e2-e598-47c6-ad5c-b81faa44c103
 permissions:
   scopes:
     - read:confluence-content.summary
@@ -24,8 +24,9 @@ permissions:
     - read:confluence-content.all
     - storage:app
   external:
-    images:
-      - i.imgur.com
-    fetch:
-      backend:
+      images:
+        - i.imgur.com
+        - cdn.filestackcontent.com
+      fetch:
+        backend:
         - https://api.humanitix.com/v1/events/*/ticketsimport
