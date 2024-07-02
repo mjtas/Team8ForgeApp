@@ -1,14 +1,26 @@
 modules:
   macro:
-    - key: team8app-hello-world-macro
+    - key: ticket-leaderboard-macro
       resource: main
       render: native
       resolver:
-        function: resolver
-      title: Team8App (Kshama)
+        function: getLeaderboardFunction
+      title: Leaderboard
+      description: Display a leaderboard of ticket buyers 
   function:
-    - key: resolver
+    - key: getLeaderboardFunction
       handler: index.handler
+    - key: syncTickets
+      handler: index.syncTicketsHandler
+  scheduledTrigger:
+    - function: syncTickets
+      interval: "day"
+      key: sync-ticket-data
+  trigger:
+    - key: getLeaderboardTrigger
+      function: getLeaderboardFunction
+      events:
+        - http
 resources:
   - key: main
     path: src/frontend/index.jsx
@@ -16,3 +28,13 @@ app:
   runtime:
     name: nodejs18.x
   id: ari:cloud:ecosystem::app/b75de96d-cfa3-4e49-a1bb-14e8ac3df713
+permissions:
+  scopes:
+    - read:confluence-content.summary
+    - write:confluence-content
+    - read:confluence-content.all
+    - storage:app
+  external:
+      fetch:
+        backend:
+          - https://api.humanitix.com/v1/events/*/tickets
